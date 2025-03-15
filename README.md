@@ -1,8 +1,3 @@
-# JavaAvanadeProject
-
-Diagrama de classes 
-
-``` mermaid
 classDiagram
     class Product {
         +int id
@@ -59,6 +54,28 @@ classDiagram
         +StockManager manager
     }
 
+    class User {
+        +int id
+        +String username
+        +String password
+        +List~Role~ roles
+    }
+
+    class Role {
+        +int id
+        +String name
+    }
+
+    class SecurityService {
+        +boolean authenticate(String username, String password)
+        +boolean authorize(User user, String permission)
+    }
+
+    class JwtTokenProvider {
+        +String generateToken(User user)
+        +boolean validateToken(String token)
+    }
+
     Product --> Supplier : has
     InventorySystem --> Product : contains
     InventorySystem --> StockOperations : manages
@@ -67,4 +84,9 @@ classDiagram
     StockOperations --> UpdateOperation : uses
     StockOperations --> DeleteOperation : uses
     InventorySystem --> StockManager : managed by
-```
+
+    User --> Role : has
+    SecurityService --> User : authenticates
+    SecurityService --> Role : verifies
+    JwtTokenProvider --> User : issues token
+    JwtTokenProvider --> SecurityService : validates token

@@ -1,92 +1,57 @@
+```mermaid
 classDiagram
-    class Product {
-        +int id
-        +String name
-        +String category
-        +int quantity
-        +double price
-        +Supplier supplier
+    direction TB
+
+    class Produto {
+        +Long id
+        +String nome
+        +BigDecimal preco
+        +Integer quantidade
+        +Categoria categoria
+        +Fornecedor fornecedor
     }
 
-    class Supplier {
-        +int id
-        +String name
-        +String contact
+    class Categoria {
+        +Long id
+        +String nome
     }
 
-    class StockOperations {
-        +CreateOperation create
-        +ReadOperation read
-        +UpdateOperation update
-        +DeleteOperation delete
+    class Fornecedor {
+        +Long id
+        +String nome
     }
 
-    class CreateOperation {
-        +String description
-        +Product example
-    }
+    class ProdutoController
+    class CategoriaController
+    class FornecedorController
+    class ProdutoService
+    class ProdutoRepository
+    class CategoriaRepository
+    class FornecedorRepository
+    class SecurityConfig
+    class DataLoader
 
-    class ReadOperation {
-        +String description
-        +String example
-    }
+    %% Relacionamentos de domínio
+    Produto --> Categoria : pertence a
+    Produto --> Fornecedor : fornecido por
 
-    class UpdateOperation {
-        +String description
-        +Product example
-    }
+    %% Lógica de negócio
+    ProdutoController --> ProdutoService
+    ProdutoService --> ProdutoRepository
+    ProdutoRepository --> Produto
 
-    class DeleteOperation {
-        +String description
-        +String example
-    }
+    CategoriaController --> CategoriaRepository
+    CategoriaRepository --> Categoria
 
-    class StockManager {
-        +int id
-        +String name
-        +String role
-    }
+    FornecedorController --> FornecedorRepository
+    FornecedorRepository --> Fornecedor
 
-    class InventorySystem {
-        +List~Product~ products
-        +StockOperations operations
-        +String lastUpdate
-        +StockManager manager
-    }
+    %% Configurações
+    SecurityConfig --> ProdutoController
+    DataLoader --> Categoria
+    DataLoader --> Fornecedor
+    DataLoader --> Produto
 
-    class User {
-        +int id
-        +String username
-        +String password
-        +List~Role~ roles
-    }
 
-    class Role {
-        +int id
-        +String name
-    }
 
-    class SecurityService {
-        +boolean authenticate(String username, String password)
-        +boolean authorize(User user, String permission)
-    }
-
-    class JwtTokenProvider {
-        +String generateToken(User user)
-        +boolean validateToken(String token)
-    }
-
-    Product --> Supplier : has
-    InventorySystem --> Product : contains
-    InventorySystem --> StockOperations : manages
-    StockOperations --> CreateOperation : uses
-    StockOperations --> ReadOperation : uses
-    StockOperations --> UpdateOperation : uses
-    StockOperations --> DeleteOperation : uses
-    InventorySystem --> StockManager : managed by
-
-    User --> Role : has
-    SecurityService --> User : authenticates
-    SecurityService --> Role : verifies
-    JwtTokenProvider --> User : issues token
-    JwtTokenProvider --> SecurityService : validates token
+```

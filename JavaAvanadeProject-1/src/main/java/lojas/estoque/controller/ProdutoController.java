@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lojas.estoque.model.Produto;
 import lojas.estoque.repository.ProdutoRepository;
+import lojas.estoque.Services.ProdutoService;
 
 @RestController
 @RequestMapping("/api/produtos")

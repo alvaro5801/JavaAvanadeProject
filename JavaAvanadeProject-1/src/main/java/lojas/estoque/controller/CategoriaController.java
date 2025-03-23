@@ -19,7 +19,7 @@ import lojas.estoque.model.Categoria;
 import lojas.estoque.repository.CategoriaRepository;
 
 @RestController
-@RequestMapping("/categorias")
+@RequestMapping("/api/categorias")
 public class CategoriaController {
 
     private final CategoriaRepository categoriaRepository;

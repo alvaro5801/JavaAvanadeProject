@@ -13,28 +13,29 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "fornecedores")
-public class Fornecedor {
+@Table(name = "categorias")
+public class Categoria {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome do fornecedor é obrigatório.")
-    @Size(min = 3, message = "O nome do fornecedor deve ter pelo menos 3 caracteres.")
+    @NotBlank(message = "O nome da categoria é obrigatório.") 
+    @Size(min = 3, message = "O nome da categoria deve ter pelo menos 3 caracteres.") 
+
     @Column(nullable = false, unique = true)
     private String nome;
 
-    @OneToMany(mappedBy = "fornecedor")
-    private List<Produto> produtos;
+    @OneToMany(mappedBy = "categoria")
+    private List<Produto> produto;
 
-    public Fornecedor() {}
+    public Categoria() {}
 
-    public Fornecedor(String nome) {
+    public Categoria(String nome) {
         this.nome = nome;
     }
 
-    
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -52,11 +53,11 @@ public class Fornecedor {
         this.nome = nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public List<Produto> getProduto() {
+        return produto;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setProduto(List<Produto> produto) {
+        this.produto = produto;
     }
 }

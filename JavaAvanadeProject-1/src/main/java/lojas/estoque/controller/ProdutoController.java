@@ -29,10 +29,14 @@ public class ProdutoController {
                       .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<Produto> salvar(@RequestBody Produto produto) {
-        Produto salvo = produtoRepository.save(produto);
-        return ResponseEntity.ok(salvo);
+   @PostMapping
+    public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
+        try {
+            Produto novoProduto = produtoService.salvarProduto(produto);
+            return new ResponseEntity<>(novoProduto, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PutMapping("/{id}")

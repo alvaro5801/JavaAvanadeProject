@@ -11,6 +11,16 @@ import lojas.estoque.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    public Produto salvarProduto(Produto produto) {
+        if (produtoRepository.existsByNome(produto.getNome())) {
+            throw new IllegalArgumentException("Já existe um produto com o nome: " + produto.getNome());
+        }
+        return produtoRepository.save(produto);
+     }
+
     private final ProdutoRepository produtoRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository) {

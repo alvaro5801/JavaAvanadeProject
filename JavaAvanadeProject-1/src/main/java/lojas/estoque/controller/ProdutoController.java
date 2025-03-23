@@ -2,13 +2,11 @@ package lojas.estoque.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import lojas.estoque.model.Produto;
 import lojas.estoque.repository.ProdutoRepository;
@@ -18,9 +16,13 @@ import lojas.estoque.Services.ProdutoService;
 @RequestMapping("/api/produtos")
 public class ProdutoController {
 
+    private final ProdutoService produtoService;
+    private final ProdutoRepository produtoRepository;
+
     @Autowired
-    public ProdutoController(ProdutoService produtoService) {
+    public ProdutoController(ProdutoService produtoService, ProdutoRepository produtoRepository) {
         this.produtoService = produtoService;
+        this.produtoRepository = produtoRepository;
     }
 
     @GetMapping
@@ -35,7 +37,7 @@ public class ProdutoController {
                       .orElse(ResponseEntity.notFound().build());
     }
 
-   @PostMapping
+    @PostMapping
     public ResponseEntity<?> criarProduto(@RequestBody Produto produto) {
         try {
             Produto novoProduto = produtoService.salvarProduto(produto);

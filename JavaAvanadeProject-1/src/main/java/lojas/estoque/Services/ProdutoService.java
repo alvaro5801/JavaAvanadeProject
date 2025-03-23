@@ -1,10 +1,9 @@
 package lojas.estoque.Services;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.stereotype.Service;
 
 import lojas.estoque.model.Produto;
 import lojas.estoque.repository.ProdutoRepository;
@@ -12,7 +11,6 @@ import lojas.estoque.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
- 
     private final ProdutoRepository produtoRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository) {
@@ -25,8 +23,6 @@ public class ProdutoService {
         }
         return produtoRepository.save(produto);
     }
-
-  
 
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();
@@ -46,7 +42,7 @@ public class ProdutoService {
         } else {
             throw new RuntimeException("Produto não encontrado!");
         }
-    } 
+    }
 
     public Produto atualizarQuantidade(Long id, Integer novaQuantidade) {
         Produto produto = produtoRepository.findById(id)

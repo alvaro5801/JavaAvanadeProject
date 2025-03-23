@@ -1,8 +1,16 @@
 package lojas.estoque.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "fornecedores")
@@ -12,32 +20,43 @@ public class Fornecedor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "O nome do fornecedor é obrigatório.")
+    @Size(min = 3, message = "O nome do fornecedor deve ter pelo menos 3 caracteres.")
+    @Column(nullable = false, unique = true)
     private String nome;
 
     @OneToMany(mappedBy = "fornecedor")
-    @JsonIgnore // evita loop de retorno de dados
     private List<Produto> produtos;
 
-    // Construtores
     public Fornecedor() {}
 
     public Fornecedor(String nome) {
         this.nome = nome;
     }
 
-    public Fornecedor(Long id, String nome) {
+    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    // Getters e Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public List<Produto> getProdutos() {
+        return produtos;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
-
-    public List<Produto> getProdutos() { return produtos; }
-    public void setProdutos(List<Produto> produtos) { this.produtos = produtos; }
+    public void setProdutos(List<Produto> produtos) {
+        this.produtos = produtos;
+    }
 }

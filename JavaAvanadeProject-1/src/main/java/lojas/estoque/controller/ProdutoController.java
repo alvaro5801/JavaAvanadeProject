@@ -19,7 +19,9 @@ import lojas.estoque.Services.ProdutoService;
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    public ProdutoController(ProdutoService produtoService) {
+        this.produtoService = produtoService;
+    }
 
     @GetMapping
     public List<Produto> listarTodos() {

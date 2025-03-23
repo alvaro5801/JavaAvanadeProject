@@ -26,9 +26,7 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
-    }
+  
 
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();

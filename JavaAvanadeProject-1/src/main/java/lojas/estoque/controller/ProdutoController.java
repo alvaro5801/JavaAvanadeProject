@@ -1,11 +1,14 @@
 package lojas.estoque.controller;
 
-import lojas.estoque.model.Produto;
-import lojas.estoque.repository.ProdutoRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import lojas.estoque.model.Produto;
+import lojas.estoque.repository.ProdutoRepository;
 
 @RestController
 @RequestMapping("/api/produtos")
@@ -15,42 +18,40 @@ public class ProdutoController {
     private ProdutoRepository produtoRepository;
 
     @GetMapping
-    public List<Produto> listarProdutos() {
+    public List<Produto> listarTodos() {
         return produtoRepository.findAll();
     }
 
-    @PostMapping
-    public Produto salvarProduto(@RequestBody Produto produto) {
-        return produtoRepository.save(produto);
+    @GetMapping("/{id}")
+    public ResponseEntity<Produto> buscarPorId(@PathVariable Long id) {
+        Optional<Produto> produto = produtoRepository.findById(id);
+        return produto.map(ResponseEntity::ok)
+                      .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{id}")
-    public Produto buscarPorId(@PathVariable Long id) {
-        return produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    @PostMapping
+    public ResponseEntity<Produto> salvar(@RequestBody Produto produto) {
+        Produto salvo = produtoRepository.save(produto);
+        return ResponseEntity.ok(salvo);
     }
 
     @PutMapping("/{id}")
-    public Produto atualizarProduto(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
-        Produto produto = produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-
-        produto.setNome(produtoAtualizado.getNome());
-        produto.setPreco(produtoAtualizado.getPreco());
-        produto.setQuantidade(produtoAtualizado.getQuantidade());
-        produto.setCategoria(produtoAtualizado.getCategoria());
-        produto.setFornecedor(produtoAtualizado.getFornecedor());
-
-        return produtoRepository.save(produto);
+    public ResponseEntity<Produto> atualizar(@PathVariable Long id, @RequestBody Produto produtoAtualizado) {
+        return produtoRepository.findById(id).map(produto -> {
+            produto.setNome(produtoAtualizado.getNome());
+            produto.setPreco(produtoAtualizado.getPreco());
+            produto.setQuantidade(produtoAtualizado.getQuantidade());
+            produto.setCategoria(produtoAtualizado.getCategoria());
+            produto.setFornecedor(produtoAtualizado.getFornecedor());
+            return ResponseEntity.ok(produtoRepository.save(produto));
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deletarProduto(@PathVariable Long id) {
-        produtoRepository.deleteById(id);
-    }
-
-    @PutMapping("/{id}/quantidade")
-    public Produto atualizarQuantidade(@PathVariable Long id, @RequestParam Integer quantidade) {
-        Produto produto = produtoRepository.findById(id).orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-        produto.setQuantidade(quantidade);
-        return produtoRepository.save(produto);
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        return produtoRepository.findById(id).map(produto -> {
+            produtoRepository.delete(produto);
+            return ResponseEntity.noContent().<Void>build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 }

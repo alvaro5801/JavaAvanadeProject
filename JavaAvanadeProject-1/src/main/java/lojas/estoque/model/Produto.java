@@ -2,14 +2,8 @@ package lojas.estoque.model;
 
 import java.math.BigDecimal;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "produtos")
@@ -30,10 +24,12 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
+    @JsonIgnoreProperties("produto") // evita recursão infinita
     private Categoria categoria;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false)
+    @JsonIgnoreProperties("produtos") // evita recursão infinita
     private Fornecedor fornecedor;
 
     // Construtores
@@ -42,15 +38,14 @@ public class Produto {
     public Produto(String nome, BigDecimal preco, Integer quantidade, Categoria categoria, Fornecedor fornecedor) {
         this(null, nome, preco, quantidade, categoria, fornecedor);
     }
-    
-    
+
     public Produto(Long id, String nome, BigDecimal preco, Integer quantidade, Categoria categoria, Fornecedor fornecedor) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
+        this.quantidade = quantidade;
         this.categoria = categoria;
         this.fornecedor = fornecedor;
-        this.quantidade = quantidade;
     }
 
     // Getters e Setters
@@ -65,7 +60,7 @@ public class Produto {
 
     public Integer getQuantidade() { return quantidade; }
     public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
-    
+
     public Categoria getCategoria() { return categoria; }
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 

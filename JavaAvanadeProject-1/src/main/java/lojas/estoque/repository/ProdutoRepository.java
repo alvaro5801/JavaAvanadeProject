@@ -14,5 +14,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Transactional
     @Modifying
     @Query("UPDATE Produto p SET p.quantidade = :quantidade WHERE p.id = :id")
+    boolean existsByNome(String nome);
     void atualizarQuantidade(Long id, Integer quantidade);
 }

@@ -23,7 +23,7 @@ public class Categoria {
     @NotBlank(message = "O nome da categoria é obrigatório.") 
     @Size(min = 3, message = "O nome da categoria deve ter pelo menos 3 caracteres.") 
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nome;
 
     @OneToMany(mappedBy = "categoria")

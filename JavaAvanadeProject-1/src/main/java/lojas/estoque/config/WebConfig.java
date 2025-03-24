@@ -14,7 +14,8 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://javaavanadeproject-production.up.railway.app")
+                        .allowedOrigins("https://javaavanadeproject-production.up.railway.app",
+                                       "http://javaavanadeproject-production.up.railway.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
             }

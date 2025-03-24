@@ -2,13 +2,8 @@ package lojas.estoque.model;
 
 import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -20,9 +15,8 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O nome da categoria é obrigatório.") 
-    @Size(min = 3, message = "O nome da categoria deve ter pelo menos 3 caracteres.") 
-
+    @NotBlank(message = "O nome da categoria é obrigatório.")
+    @Size(min = 3, message = "O nome da categoria deve ter pelo menos 3 caracteres.")
     @Column(nullable = false)
     private String nome;
 
@@ -35,8 +29,6 @@ public class Categoria {
     public Categoria(String nome) {
         this.nome = nome;
     }
-
-    // Getters e Setters
 
     public Long getId() {
         return id;

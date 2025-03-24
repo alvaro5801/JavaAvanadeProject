@@ -1,5 +1,8 @@
 package lojas.estoque.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 import java.util.List;
 
 import jakarta.persistence.Column;

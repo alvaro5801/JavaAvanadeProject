@@ -18,6 +18,7 @@ public class SecurityConfig {
                     "/swagger-ui/**",
                     "/v3/api-docs/**"
                 ).permitAll()
+                .anyRequest().permitAll()
             )
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 

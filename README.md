@@ -60,35 +60,36 @@ classDiagram
 
 # JavaAvanadeProject - Controle de Estoque com Spring Boot
 
-Este é um sistema completo de controle de estoque, desenvolvido com **Spring Boot**, **Java 21** e banco de dados **H2**, com foco em boas práticas de arquitetura, segurança, e extensibilidade. Ideal como projeto técnico para entrevistas e demonstração de conhecimento.
+Este é um sistema completo de controle de estoque, desenvolvido com **Spring Boot**, **Java 21** e banco de dados **PostgreSQL** em nuvem com **Railway**, com foco em boas práticas de arquitetura, segurança e extensibilidade. O projeto foi desenvolvido para fins de **entrevista técnica** e demonstração prática de conhecimento em backend Java.
 
 ---
 
 ## 🧠 Visão Técnica Geral
 
 - **Camadas**: Controller, Service, Repository, Model
-- **Padrão**: MVC (Model-View-Controller)
+- **Padrão Arquitetural**: MVC (Model-View-Controller)
 - **Segurança**: Spring Security com autenticação in-memory
-- **Persistência**: Spring Data JPA + H2 Database
-- **Documentação**: Swagger/OpenAPI 3
-- **Validações**: Bean Validation (@Valid, @NotNull, etc.)
-- **Tratamento de erros**: ResponseEntity customizados
-- **Carga de dados**: via `DataLoader` com `CommandLineRunner`
+- **Persistência**: Spring Data JPA + Hibernate + PostgreSQL
+- **Documentação**: Swagger (Springdoc OpenAPI 3)
+- **Validações**: Bean Validation (@Valid, @NotBlank, etc.)
+- **Tratamento de erros**: ResponseEntity customizado + GlobalExceptionHandler
+- **Deploy**: Railway com build automatizado via Dockerfile e Gradle
 
 ---
 
 ## ⚙️ Tecnologias
 
-| Tecnologia       | Versão/Implementação |
-|------------------|----------------------|
-| Java             | 21                   |
-| Spring Boot      | 3.x                  |
-| Spring Web       | REST API             |
-| Spring Data JPA  | ORM                  |
-| H2 Database      | Em memória           |
-| Spring Security  | InMemory Auth        |
-| Swagger (Springdoc OpenAPI) | UI REST Docs |
-| Gradle           | Build Tool           |
+| Tecnologia       | Versão / Implementação     |
+|------------------|----------------------------|
+| Java             | 21                         |
+| Spring Boot      | 3.4.3                      |
+| Spring Web       | REST API                   |
+| Spring Data JPA  | ORM com Hibernate          |
+| PostgreSQL       | Banco de dados em nuvem    |
+| Spring Security  | Autenticação básica        |
+| Swagger          | OpenAPI + Swagger UI       |
+| Gradle           | Build tool                 |
+| Railway          | Plataforma de deploy cloud |
 
 ---
 
@@ -113,44 +114,46 @@ src/
 
 - Usuário: `admin`
 - Senha: `12345`
-- Segurança configurada em `SecurityConfig`
-- Apenas endpoints de produtos exigem autenticação (`/produtos`)
-- Outros estão públicos para facilitar testes
+- Endpoints `/api/produtos/**` exigem autenticação básica (Basic Auth)
+- Endpoints de `/api/categorias` e `/api/fornecedores` são públicos para facilitar testes
 
 ---
 
-## 🔍 Endpoints
+## 🔍 Principais Endpoints
 
-Alguns exemplos:
+### Produtos (Requer autenticação)
+- `GET /api/produtos` → Listar todos
+- `GET /api/produtos/{id}` → Buscar por ID
+- `POST /api/produtos` → Criar produto
+- `PUT /api/produtos/{id}` → Atualizar
+- `DELETE /api/produtos/{id}` → Remover
 
-### Produtos
-- `GET /produtos` → lista todos os produtos (autenticado)
-- `POST /produtos` → cria novo produto
-- `PUT /produtos/{id}` → atualiza produto
-- `DELETE /produtos/{id}` → remove produto
+### Categorias e Fornecedores (Público)
+- `GET /api/categorias` | `GET /api/fornecedores`
+- `POST /api/categorias` | `POST /api/fornecedores`
+- `PUT /api/categorias/{id}` | `PUT /api/fornecedores/{id}`
+- `DELETE /api/categorias/{id}` | `DELETE /api/fornecedores/{id}`
 
-### Categorias e Fornecedores
-- `GET /categorias`, `GET /fornecedores`
-- `POST`, `PUT`, `DELETE` disponíveis sem autenticação
 
 ---
 
 ## 🧪 Testes
 
-- Testes de integração prontos com `@SpringBootTest`
-- Testes manuais via Postman
-- Verificações de:
-  - Status HTTP adequados (200, 201, 409, 404)
-  - Mensagens de erro para entidades duplicadas ou inexistentes
+- Testes funcionais com Postman
+- Validações automáticas:
+  - Erros de duplicidade no nome de produtos
+  - Respostas com status apropriados (`201`, `400`, `404`)
+- Swagger funcionando para testar todos os endpoints via interface
 
 ---
 
-## 💾 Banco de Dados H2
+## 📦 Banco de Dados (Produção)
 
-- URL: `http://localhost:8080/h2-console`
-- JDBC URL: `jdbc:h2:mem:estoque`
-- Usuário: `admin`
-- Senha: `paramore007`
+- PostgreSQL hospedado na Railway
+- Configurações via variáveis de ambiente (`PGHOST`, `PGDATABASE`, etc.)
+- **DDL Mode**: `create` (recria as tabelas a cada novo deploy)
+- H2 desativado no projeto final
+
 
 ---
 
@@ -178,12 +181,13 @@ cd JavaAvanadeProject
 - O projeto possui validações para duplicidade (nome de categoria e fornecedor).
 - Cada produto pertence a uma categoria e a um fornecedor.
 - A lógica de negócio está centralizada no `ProdutoService`.
-- O `DataLoader` popula dados iniciais automaticamente na primeira execução.
-- O projeto está pronto para ser conectado a banco de dados real em produção (ex: PostgreSQL).
 
 ---
 
-## 📄 Autor
+## 👤 Autor
 
-Desenvolvido por [Álvaro Silva] – Projeto técnico para fins de entrevista de estágio na Avanade.
+👤 Autor
+Desenvolvido por Álvaro Silva
+Projeto técnico para processo seletivo de estágio na Avanade
+GitHub: alvaro5801
 

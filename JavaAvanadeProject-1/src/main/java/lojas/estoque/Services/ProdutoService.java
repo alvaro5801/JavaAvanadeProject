@@ -32,9 +32,6 @@ public class ProdutoService {
         return produtoRepository.findById(id);
     }
 
-    public Produto salvar(Produto produto) {
-        return produtoRepository.save(produto);
-    }
 
     public void deletar(Long id) {
         if (produtoRepository.existsById(id)) {

@@ -23,8 +23,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
 
-    runtimeOnly 'org.postgresql:postgresql' // PostgreSQL em produção
-    //runtimeOnly 'com.h2database:h2'         H2 para desenvolvimento local
+    runtimeOnly 'org.postgresql:postgresql'
+    
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

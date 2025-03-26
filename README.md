@@ -4,6 +4,7 @@
 classDiagram
     direction TB
 
+    %% Entidades
     class Produto {
         +Long id
         +String nome
@@ -23,36 +24,47 @@ classDiagram
         +String nome
     }
 
+    %% Controllers
     class ProdutoController
     class CategoriaController
     class FornecedorController
+    class HomeController
+
+    %% Services
     class ProdutoService
+
+    %% Repositórios
     class ProdutoRepository
     class CategoriaRepository
     class FornecedorRepository
+
+    %% Configurações
     class SecurityConfig
-    class DataLoader
+    class WebConfig
 
     %% Relacionamentos de domínio
     Produto --> Categoria : pertence a
     Produto --> Fornecedor : fornecido por
 
-    %% Lógica de negócio
+    %% Fluxo de Produto
     ProdutoController --> ProdutoService
     ProdutoService --> ProdutoRepository
     ProdutoRepository --> Produto
 
+    %% Fluxo de Categoria
     CategoriaController --> CategoriaRepository
     CategoriaRepository --> Categoria
 
+    %% Fluxo de Fornecedor
     FornecedorController --> FornecedorRepository
     FornecedorRepository --> Fornecedor
 
-    %% Configurações
+    %% Segurança e CORS
     SecurityConfig --> ProdutoController
-    DataLoader --> Categoria
-    DataLoader --> Fornecedor
-    DataLoader --> Produto
+    WebConfig --> ProdutoController
+
+    %% Home
+    HomeController --> ProdutoController : [GET /] health-check
 
 
 
@@ -60,7 +72,7 @@ classDiagram
 
 # JavaAvanadeProject - Controle de Estoque com Spring Boot
 
-Este é um sistema completo de controle de estoque, desenvolvido com **Spring Boot**, **Java 21** e banco de dados **PostgreSQL** em nuvem com **Railway**, com foco em boas práticas de arquitetura, segurança e extensibilidade. O projeto foi desenvolvido para fins de **entrevista técnica** e demonstração prática de conhecimento em backend Java.
+Este é um sistema completo de controle de estoque, desenvolvido com **Spring Boot**, **Java 17** e banco de dados **PostgreSQL** em nuvem com **Railway**, com foco em boas práticas de arquitetura, segurança e extensibilidade. O projeto foi desenvolvido para fins de **entrevista técnica** e demonstração prática de conhecimento em backend Java.
 
 ---
 
@@ -108,18 +120,13 @@ src/
              └── EstoqueApplication   # Classe principal
 ```
 
----
 
 ## 🔐 Segurança
-
-- Usuário: `admin`
-- Senha: `12345`
+- Toda a rede e senha estão de acordo com sistema railway onde os mesmo fornecem senha e id automáticos.
 - Endpoints `/api/produtos/**` exigem autenticação básica (Basic Auth)
 - Endpoints de `/api/categorias` e `/api/fornecedores` são públicos para facilitar testes
 
 ---
-
-## 🔍 Principais Endpoints
 
 ### Produtos (Requer autenticação)
 - `GET /api/produtos` → Listar todos
@@ -152,10 +159,6 @@ src/
 - PostgreSQL hospedado na Railway
 - Configurações via variáveis de ambiente (`PGHOST`, `PGDATABASE`, etc.)
 - **DDL Mode**: `create` (recria as tabelas a cada novo deploy)
-- H2 desativado no projeto final
-
-
----
 
 ## 🚀 Como Executar o Projeto
 

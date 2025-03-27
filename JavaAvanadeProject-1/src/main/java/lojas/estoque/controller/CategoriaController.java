@@ -49,13 +49,17 @@ public class CategoriaController {
     
     @PostMapping
     public ResponseEntity<?> criarCategoria(@Valid @RequestBody Categoria categoria) {
-        if (categoriaRepository.existsByNome(categoria.getNome())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                                 .body("{\"erro\": \"A categoria já existe!\"}");
-        }
-        Categoria novaCategoria = categoriaRepository.save(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
+    String nomeLimpo = categoria.getNome().trim(); 
+
+    if (categoriaRepository.existsByNome(nomeLimpo)) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body("{\"erro\": \"A categoria já existe!\"}");
     }
+
+    categoria.setNome(nomeLimpo); 
+    Categoria novaCategoria = categoriaRepository.save(categoria);
+    return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
+}
 
     
     @PutMapping("/{id}")

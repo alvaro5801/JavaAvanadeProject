@@ -41,14 +41,18 @@ public class FornecedorController {
     
     @PostMapping
     public ResponseEntity<?> criarFornecedor(@Valid @RequestBody Fornecedor fornecedor) {
-        if (fornecedorRepository.existsByNome(fornecedor.getNome())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("{\"erro\": \"O fornecedor já existe!\"}");
-        }
+    String nomeLimpo = fornecedor.getNome().trim(); 
 
-        Fornecedor novoFornecedor = fornecedorRepository.save(fornecedor);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novoFornecedor);
+    if (fornecedorRepository.existsByNome(nomeLimpo)) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body("{\"erro\": \"O fornecedor já existe!\"}");
     }
+
+    fornecedor.setNome(nomeLimpo); 
+    Fornecedor novoFornecedor = fornecedorRepository.save(fornecedor);
+    return ResponseEntity.status(HttpStatus.CREATED).body(novoFornecedor);
+}
+
 
     // 🔁 Atualizar fornecedor
     @PutMapping("/{id}")

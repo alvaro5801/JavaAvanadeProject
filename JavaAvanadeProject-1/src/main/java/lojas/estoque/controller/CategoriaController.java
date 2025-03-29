@@ -28,13 +28,11 @@ public class CategoriaController {
         this.categoriaRepository = categoriaRepository;
     }
 
-    
     @GetMapping
     public List<Categoria> listarCategorias() {
         return categoriaRepository.findAll();
     }
 
-   
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarCategoriaPorId(@PathVariable Long id) {
         Optional<Categoria> categoria = categoriaRepository.findById(id);
@@ -46,22 +44,15 @@ public class CategoriaController {
         }
     }
 
-    
-   @PostMapping
+    @PostMapping
     public ResponseEntity<?> criarCategoria(@Valid @RequestBody Categoria categoria) {
-    String nomeLimpo = categoria.getNome().trim();
-    categoria.setNome(nomeLimpo);
+        String nomeLimpo = categoria.getNome().trim();
+        categoria.setNome(nomeLimpo);
 
-    Categoria novaCategoria = categoriaRepository.save(categoria);
-    return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
-}
+        Categoria novaCategoria = categoriaRepository.save(categoria);
+        return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
+    }
 
-    categoria.setNome(nomeLimpo); 
-    Categoria novaCategoria = categoriaRepository.save(categoria);
-    return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
-}
-
-    
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoriaAtualizada) {
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);
@@ -78,7 +69,6 @@ public class CategoriaController {
         return ResponseEntity.ok(categoria);
     }
 
-   
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCategoria(@PathVariable Long id) {
         if (!categoriaRepository.existsById(id)) {

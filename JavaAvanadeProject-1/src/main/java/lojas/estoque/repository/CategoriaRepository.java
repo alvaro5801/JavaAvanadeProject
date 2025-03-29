@@ -10,4 +10,6 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
     Optional<Categoria> findByNome(String nome);
     //boolean existsByNome(String nome);
     boolean existsByFornecedor(Fornecedor fornecedor);
+    boolean existsByNomeAndFornecedor(String nome, Fornecedor fornecedor);
+
 }

@@ -59,11 +59,15 @@ public class ProdutoController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable Long id) {
-        return produtoRepository.findById(id).map(produto -> {
-            produtoRepository.delete(produto);
-            return ResponseEntity.noContent().<Void>build();
-        }).orElse(ResponseEntity.notFound().build());
+   @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletar(@PathVariable Long id) {
+    if (!produtoRepository.existsById(id)) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("{\"erro\": \"Produto com ID " + id + " não encontrado!\"}");
     }
+
+    produtoRepository.deleteById(id);
+    return ResponseEntity.noContent().build();
+}
+
 }

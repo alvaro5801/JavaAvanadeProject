@@ -38,10 +38,22 @@ public class ProdutoService {
 
 
     public void deletar(Long id) {
-        if (produtoRepository.existsById(id)) {
-            produtoRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Produto não encontrado!");
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        Categoria categoria = produto.getCategoria();
+        Fornecedor fornecedor = produto.getFornecedor();
+
+        produtoRepository.delete(produto);
+
+        // Se não restaram produtos na categoria, deletar a categoria
+        if (categoria != null && !produtoRepository.existsByCategoria(categoria)) {
+            categoriaRepository.deleteById(categoria.getId());
+
+            // Se não restaram categorias no fornecedor, deletar o fornecedor
+            if (fornecedor != null && !categoriaRepository.existsByFornecedor(fornecedor)) {
+                fornecedorRepository.deleteById(fornecedor.getId());
+            }
         }
     }
 

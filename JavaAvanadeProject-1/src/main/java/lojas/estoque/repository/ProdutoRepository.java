@@ -14,7 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     boolean existsByNome(String nome);
-    boolean existsByCategoria(Categoria categoria); 
+    boolean existsByCategoria(Categoria categoria);
+    Optional<Produto> findByNome(String nome);
 
     @Transactional
     @Modifying

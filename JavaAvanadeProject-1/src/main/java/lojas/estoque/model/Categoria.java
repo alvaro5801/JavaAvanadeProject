@@ -20,6 +20,10 @@ public class Categoria {
     @Column(nullable = false)
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "fornecedor_id", nullable = false)
+    private Fornecedor fornecedor;
+
     @OneToMany(mappedBy = "categoria")
     @JsonIgnore
     private List<Produto> produto;
@@ -44,6 +48,14 @@ public class Categoria {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Fornecedor getFornecedor() {
+        return fornecedor;
+    }
+
+    public void setFornecedor(Fornecedor fornecedor) {
+        this.fornecedor = fornecedor;
     }
 
     public List<Produto> getProduto() {

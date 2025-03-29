@@ -46,13 +46,18 @@ public class CategoriaController {
 
     @PostMapping
     public ResponseEntity<?> criarCategoria(@Valid @RequestBody Categoria categoria) {
-        String nomeLimpo = categoria.getNome().trim();
-        categoria.setNome(nomeLimpo);
+    String nomeLimpo = categoria.getNome().trim();
+    categoria.setNome(nomeLimpo);
 
-        Categoria novaCategoria = categoriaRepository.save(categoria);
-        return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
+    // Agora valida se a categoria já existe para esse fornecedor específico
+    if (categoriaRepository.existsByNomeAndFornecedor(nomeLimpo, categoria.getFornecedor())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                             .body("{\"erro\": \"Essa categoria já existe para este fornecedor!\"}");
     }
 
+    Categoria novaCategoria = categoriaRepository.save(categoria);
+    return ResponseEntity.status(HttpStatus.CREATED).body(novaCategoria);
+}
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizarCategoria(@PathVariable Long id, @RequestBody Categoria categoriaAtualizada) {
         Optional<Categoria> optionalCategoria = categoriaRepository.findById(id);

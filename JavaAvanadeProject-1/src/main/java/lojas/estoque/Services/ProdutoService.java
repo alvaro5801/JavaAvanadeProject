@@ -7,7 +7,6 @@ import lojas.estoque.repository.CategoriaRepository;
 import lojas.estoque.repository.FornecedorRepository;
 import lojas.estoque.repository.ProdutoRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +15,17 @@ import java.util.Optional;
 @Service
 public class ProdutoService {
 
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
+    private final CategoriaRepository categoriaRepository;
+    private final FornecedorRepository fornecedorRepository;
 
-    @Autowired
-    private CategoriaRepository categoriaRepository;
-
-    @Autowired
-    private FornecedorRepository fornecedorRepository;
+    public ProdutoService(ProdutoRepository produtoRepository,
+                          CategoriaRepository categoriaRepository,
+                          FornecedorRepository fornecedorRepository) {
+        this.produtoRepository = produtoRepository;
+        this.categoriaRepository = categoriaRepository;
+        this.fornecedorRepository = fornecedorRepository;
+    }
 
     public Produto salvarProduto(Produto produto) {
         if (produtoRepository.existsByNome(produto.getNome())) {
@@ -53,11 +55,9 @@ public class ProdutoService {
 
         produtoRepository.delete(produto);
 
-        // Se não restaram produtos na categoria, deletar a categoria
         if (categoria != null && !produtoRepository.existsByCategoria(categoria)) {
             categoriaRepository.deleteById(categoria.getId());
 
-            // Se não restaram categorias no fornecedor, deletar o fornecedor
             if (fornecedor != null && !categoriaRepository.existsByFornecedor(fornecedor)) {
                 fornecedorRepository.deleteById(fornecedor.getId());
             }

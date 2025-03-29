@@ -11,6 +11,15 @@ import lojas.estoque.repository.ProdutoRepository;
 @Service
 public class ProdutoService {
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
+
+    @Autowired
+    private FornecedorRepository fornecedorRepository;
+
     private final ProdutoRepository produtoRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository) {

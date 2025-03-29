@@ -66,7 +66,7 @@ public class ProdutoController {
                 .body("{\"erro\": \"Produto com ID " + id + " não encontrado!\"}");
     }
 
-    produtoRepository.deleteById(id);
+     produtoService.deletar(id);
     return ResponseEntity.noContent().build();
 }
 

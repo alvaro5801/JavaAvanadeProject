@@ -1,9 +1,7 @@
 package lojas.estoque.model;
 
 import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -25,15 +23,14 @@ public class Produto {
 
     @ManyToOne
     @JoinColumn(name = "categoria_id", nullable = false)
-    @JsonIgnoreProperties("produto") // evita recursão infinita
+    @JsonIgnoreProperties("produtos") 
     private Categoria categoria;
 
     @ManyToOne
     @JoinColumn(name = "fornecedor_id", nullable = false)
-    @JsonIgnoreProperties({"fornecedor"}) // evita expansão no Swagger
+    @JsonIgnoreProperties({"categorias", "produtos"}) 
     private Fornecedor fornecedor;
 
-    // Construtores
     public Produto() {}
 
     public Produto(String nome, BigDecimal preco, Integer quantidade, Categoria categoria, Fornecedor fornecedor) {
@@ -49,7 +46,6 @@ public class Produto {
         this.fornecedor = fornecedor;
     }
 
-    // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

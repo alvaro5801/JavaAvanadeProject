@@ -40,8 +40,6 @@ Essa aplicação é ideal para empresas que precisam cadastrar, consultar, atual
 
 - Um **Fornecedor** pode ter uma ou mais **Categorias**
 - Uma **Categoria** pode ter um ou mais **Produtos**
-- Ao deletar um Produto, se for o último da Categoria, a Categoria é excluída.
-- Se for a última Categoria do Fornecedor, o Fornecedor também é excluído.
 
 ---
 
